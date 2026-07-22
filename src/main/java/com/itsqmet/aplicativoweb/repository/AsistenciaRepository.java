@@ -10,4 +10,5 @@ import java.util.List;
 public interface AsistenciaRepository extends JpaRepository<Asistencia, Long> {
     List<Asistencia> findByAlumnoId(Long alumnoId);
     List<Asistencia> findByAlumnoIdAndEstado(Long alumnoId, EstadoAsistencia estado);
+    List<Asistencia> findByDocenteId(Long docenteId);
 }
