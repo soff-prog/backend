@@ -23,6 +23,6 @@ public class Curso {
     private List<Docente> docentes;
 
     @OneToMany(mappedBy = "curso")
-    private List<Alumnos> alumnos;
+    private List<Alumno> alumnos;
 
 }

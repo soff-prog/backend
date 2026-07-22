@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-
 
 @Entity
 @Data
@@ -28,7 +25,7 @@ public class Asistencia {
 
     @ManyToOne
     @JoinColumn(name = "alumno_id")
-    private Alumnos alumno;
+    private Alumno alumno;
 
     @ManyToOne
     @JoinColumn(name = "docente_id")
