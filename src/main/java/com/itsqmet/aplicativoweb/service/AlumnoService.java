@@ -13,33 +13,38 @@ public class AlumnoService {
 
     @Autowired
     private AlumnoRepository alumnoRepository;
-
+    //READ - listar todos
     public List<Alumno> obtenerTodo() {
         return alumnoRepository.findAll();
     }
-
+    //READ- buscar por id con excepción personalizada
     public Optional<Alumno> buscarPorId(Long id) {
-        return alumnoRepository.findById(id);
+        return alumnoRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Alumno con id" + id+"no existe")));
     }
-
-    public Alumno crearAlumno(Alumno alumno) {
+    //CREATE - crear alumno con validacion basica
+    public Alumno crearAlumno(Alumno alumno)
+    {
+        if(alumno.getNombre()==null ||alumno.getApellido() ==null){
+            throw new IllegalArgumentException("Nombre y Apellido son obligatorio");
+        }
         return alumnoRepository.save(alumno);
     }
-
+    //UPDATE-actualizar alumno
     public Optional<Alumno> actualizar(Long id, Alumno alumnoActualizado) {
         return alumnoRepository.findById(id).map(alumno -> {
             alumno.setNombre(alumnoActualizado.getNombre());
             alumno.setApellido(alumnoActualizado.getApellido());
             alumno.setCurso(alumnoActualizado.getCurso());
-            return alumnoRepository.save(alumno);
-        });
+            return alumnoRepository.save(alumno);})
+             .orElseThrow(()-> new IllegalArgumentException("Alumno con id" + id + "no existe")));
     }
-
+    //DELETE- eliminar alumno
     public boolean eliminar(Long id) {
-        if (alumnoRepository.existsById(id)) {
+        if (!alumnoRepository.existsById(id)) {
+            throw new IllegalArgumentException("Alumno con id "+ id +" no existe");}
             alumnoRepository.deleteById(id);
             return true;
         }
-        return false;
-    }
+
+
 }
