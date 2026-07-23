@@ -1,10 +1,10 @@
 package com.itsqmet.aplicativoweb.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 import java.util.List;
-
 
 @Entity
 @Data
@@ -15,6 +15,7 @@ public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "El campo nombre es obligatorio")
 
     private String nombre;
 
