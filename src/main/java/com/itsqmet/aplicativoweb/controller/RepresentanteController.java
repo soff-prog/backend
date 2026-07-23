@@ -1,5 +1,5 @@
 package com.itsqmet.aplicativoweb.controller;
-import com.itsqmet.aplicativoweb.model.Alumno;
+
 import com.itsqmet.aplicativoweb.model.Representante;
 import com.itsqmet.aplicativoweb.service.RepresentanteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,20 +29,16 @@ public class RepresentanteController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/curso/{representanteId}")
-    public ResponseEntity<List<Alumno>> listarPorCurso(@PathVariable Long cursoId) {
-        return ResponseEntity.ok(representanteService.obtenerPorCurso(cursoId));
-    }
-
     @PostMapping
     public ResponseEntity<Representante> guardar(@RequestBody Representante representante) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(representanteService.guardarRepresentante(representante));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(representanteService.guardarRepresentante(representante));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Alumno> actualizar(@PathVariable Long id, @RequestBody Representante representante) {
+    public ResponseEntity<Representante> actualizar(@PathVariable Long id, @RequestBody Representante representante) {
         return representanteService.obtenerPorId(id)
-                .map(a -> {
+                .map(r -> {
                     representante.setId(id);
                     return ResponseEntity.ok(representanteService.guardarRepresentante(representante));
                 })

@@ -2,9 +2,8 @@ package com.itsqmet.aplicativoweb.repository;
 
 import com.itsqmet.aplicativoweb.model.Representante;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
-public interface RepresentanteRepository extends JpaRepository <Representante,Long> {
-    List<Representante> findByRepresentanteId(Long representanteId);
+@Repository
+public interface RepresentanteRepository extends JpaRepository<Representante, Long> {
 }
