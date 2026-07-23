@@ -13,7 +13,7 @@ public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
     List<Alumno> findByCurso(String curso);
 
     //Para buscar estudiantes de un curso ordenado alfabeticamente
-    List<Alumno> findByCursoOrderByApellioAsc(String curso);
+    List<Alumno> findByCursoOrderByApellidoAsc(String curso);
 
     //Para buscar alumnos por su apellido ignorando si está en mayúscula
     List<Alumno> findByApellidoContainingIgnoreCase(String apellido);

@@ -1,12 +1,15 @@
 package com.itsqmet.aplicativoweb.service;
 
+
+import com.itsqmet.aplicativoweb.exception.NotaNoEncontradaException;
+import com.itsqmet.aplicativoweb.exception.DatosInvalidosException;
 import com.itsqmet.aplicativoweb.model.Nota;
 import com.itsqmet.aplicativoweb.repository.NotaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class NotaService {
@@ -14,31 +17,40 @@ public class NotaService {
     @Autowired
     private NotaRepository notaRepository;
 
+    //READ- listar notas
     public List<Nota> obtenerTodo() {
         return notaRepository.findAll();
     }
 
-    public Optional<Nota> buscarPorId(Long id) {
-        return notaRepository.findById(id);
+    //READ- buscar por ID con excepción personalizada
+    public Nota buscarPorId(Long id) {
+        return notaRepository.findById(id)
+                .orElseThrow(() -> new NotaNoEncontradaException(id));
     }
 
+    //CREATE- crear nota con validación
     public Nota crearNota(Nota nota) {
+        if (nota.getCalificacion() == null || nota.getFecha() == null) {
+            throw new DatosInvalidosException("La calificación y la fecha son obligatorios");
+        }
         return notaRepository.save(nota);
     }
 
-    public Optional<Nota> actualizar(Long id, Nota notaActualizado) {
+    //UPDATE- actualizar nota
+    public Nota actualizar(Long id, Nota notaActualizada) {
         return notaRepository.findById(id).map(nota -> {
-            nota.setCalificacion(notaActualizado.getCalificacion());
-            nota.setFecha(notaActualizado.getFecha());
+            nota.setCalificacion(notaActualizada.getCalificacion());
+            nota.setFecha(notaActualizada.getFecha());
             return notaRepository.save(nota);
-        });
+        }).orElseThrow(() -> new NotaNoEncontradaException(id));
     }
 
+    //DELETE- eliminar nota
     public boolean eliminar(Long id) {
-        if (notaRepository.existsById(id)) {
-            notaRepository.deleteById(id);
-            return true;
+        if (!notaRepository.existsById(id)) {
+            throw new NotaNoEncontradaException(id);
         }
-        return false;
+        notaRepository.deleteById(id);
+        return true;
     }
 }
