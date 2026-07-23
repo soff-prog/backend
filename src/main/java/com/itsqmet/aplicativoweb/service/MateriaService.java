@@ -13,16 +13,20 @@ public class MateriaService {
 
     @Autowired
     public MateriaRepository materiaRepository;
-
+    //READ-listar todas
     public List<Materia> obtenerTodo() {
         return materiaRepository.findAll();
     }
-
+    //READ- buscar por ID personalizada
     public Optional<Materia> buscarPorId(Long id) {
-        return materiaRepository.findById(id);
+        return materiaRepository.findById(id)
+        .orElseThrow(() -> new MateriaService("Material con id"+id+"no existe"));
     }
-
+    //CREATE- crear materia
     public Materia crearMateria(Materia materia) {
+        if(materia.getNombre() == null || materia.getNombre().trim().isEmpty()){
+            throw  new IllegalArgumentException("El nombre de la materia es obligatorio");
+        }
         return materiaRepository.save(materia);
     }
 
