@@ -17,50 +17,37 @@ public class NotaController {
     @Autowired
     private NotaService notaService;
 
-    // Obtener todas las notas
+    // GET: Obtener todas las notas
     @GetMapping
     public ResponseEntity<List<Nota>> obtenerTodas() {
         List<Nota> notas = notaService.obtenerTodo();
         return ResponseEntity.ok(notas);
     }
 
-    // Obtener nota por ID
+    // GET: Obtener nota por ID
     @GetMapping("/{id}")
     public ResponseEntity<Nota> obtenerPorId(@PathVariable Long id) {
-        return notaService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Nota nota = notaService.buscarPorId(id);
+        return ResponseEntity.ok(nota);
     }
 
-    // Guardar o crear una nueva nota
+    // POST: crear una nueva nota
     @PostMapping
     public ResponseEntity<Nota> crearNota(@RequestBody Nota nota) {
-        Nota nuevaNota = notaService.guardar(nota);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaNota);
+        Nota nuevaNota = notaService.crearNota(nota);
+        return new ResponseEntity<>(nuevaNota, HttpStatus.CREATED);
     }
-
-    // Actualizar una nota existente
+    // PUT: Actualizar una nota existente
     @PutMapping("/{id}")
-    public ResponseEntity<Nota> actualizarNota(@PathVariable Long id, @RequestBody Nota notaDetails) {
-        return notaService.obtenerPorId(id)
-                .map(notaExistente -> {
-                    // Setea los atributos necesarios de Nota
-                    notaExistente.setCalificacion(notaDetails.getCalificacion());
-                    notaExistente.setAlumno(notaDetails.getAlumno());
-                    notaExistente.setMateria(notaDetails.getMateria());
-                    Nota actualizada = notaService.guardar(notaExistente);
-                    return ResponseEntity.ok(actualizada);
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Nota> actualizarNota(@PathVariable Long id, @RequestBody Nota nota) {
+        Nota notaActualizada = notaService.actualizar(id, nota);
+        return ResponseEntity.ok(notaActualizada);
     }
 
-    // Eliminar una nota por ID
+    // DELEGTE: Eliminar una nota por ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarNota(@PathVariable Long id) {
-        if (notaService.obtenerPorId(id).isPresent()) {
-            notaService.eliminar(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+        notaService.eliminar(id);
+        return ResponseEntity.noContent().build();
     }
 }

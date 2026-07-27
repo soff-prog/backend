@@ -16,26 +16,33 @@ public class AlumnoController {
 
     @Autowired
     private AlumnoService alumnoService;
-
+    //GET: Obtener todos los alumnos
     @GetMapping
-    public ResponseEntity<List<Alumno>> listarTodos() {
-        return ResponseEntity.ok(alumnoService.obtenerTodos());
+    public ResponseEntity<List<Alumno>> obtenerTodos() {
+        List<Alumno> alumnos = alumnoService.obtenerTodo();
+        return ResponseEntity.ok(alumnos);
     }
-
+    //GET: OObtener alumno por ID
     @GetMapping("/{id}")
     public ResponseEntity<Alumno> obtenerPorId(@PathVariable Long id) {
-        return alumnoService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Alumno alumno = alumnoService.buscarPorId(id);
+        return ResponseEntity.ok(alumno);
     }
-
+      //POST: crear un nuevo alumno
     @PostMapping
-    public ResponseEntity<Alumno> guardar(@RequestBody Alumno alumno) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(alumnoService.guardar(alumno));
+    public ResponseEntity<Alumno> crearAlumno(@RequestBody Alumno alumno){
+        Alumno nuevoAlumno = alumnoService.crearAlumno(alumno);
+        return new ResponseEntity<>(nuevoAlumno, HttpStatus.CREATED);
     }
-
+    //PUT: Actualizar Alumno
+    @PutMapping
+    public ResponseEntity<Alumno> actualizarAlumno(@PathVariable Long id, @RequestBody Alumno alumno){
+        Alumno alumnoActualizado = alumnoService.actualizar(id, alumno);
+        return ResponseEntity.ok(alumnoActualizado);
+    }
+    //DELETE: Eliminar alumno
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarAlumno(@PathVariable Long id) {
         alumnoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
