@@ -16,26 +16,33 @@ public class MateriaController {
 
     @Autowired
     private MateriaService materiaService;
-
+    //GET : Obtener todas las materias
     @GetMapping
     public ResponseEntity<List<Materia>> listarTodas() {
-        return ResponseEntity.ok(materiaService.obtenerTodas());
+        List<Materia> materias = materiaService.obtenerTodo();
+        return ResponseEntity.ok(materias);
     }
-
+    //GET: Obtener materia por ID
     @GetMapping("/{id}")
     public ResponseEntity<Materia> obtenerPorId(@PathVariable Long id) {
-        return materiaService.obtenerPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Materia materia =materiaService.buscarPorId(id);
+        return ResponseEntity.ok(materia);
     }
-
+    //POST:Crea una nueva materia
     @PostMapping
     public ResponseEntity<Materia> guardar(@RequestBody Materia materia) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(materiaService.guardar(materia));
+        Materia nuevaMateria = materiaService.crearMateria(materia);
+        return new ResponseEntity<>(nuevaMateria, HttpStatus.CREATED);
     }
-
+    //PUT: Actualiza una materia existente
+    @PutMapping("/{id}")
+    public ResponseEntity<Materia> actualizarMateria(@PathVariable Long id ,@RequestBody Materia materia){
+        Materia materiaActualizada = materiaService.actualizar(id, materia);
+        return ResponseEntity.ok(materiaActualizada);
+    }
+    //DELETE: Elimina una materia por ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarMateria(@PathVariable Long id) {
         materiaService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
