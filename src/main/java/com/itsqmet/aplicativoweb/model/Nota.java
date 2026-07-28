@@ -1,15 +1,25 @@
 package com.itsqmet.aplicativoweb.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(
+        uniqueConstraints = @UniqueConstraint(
+                columnNames = {"alumno_id", "actividad_id"}
+        )
+)
 
 
 /**
@@ -25,20 +35,22 @@ public class Nota {
     private Long id;
 
     @NotNull(message = "La calificación no puede ser nula")
-    @Min(value = 0, message = "La calificación mínima es 0")
-    @Max(value = 10, message = "La calificación máxima es 10")
+    @DecimalMin(value = "0.0", inclusive = true, message = "La calificación mínima es 0")
+    @DecimalMax(value = "10.0", inclusive = true, message = "La calificación máxima es 10")
     private Double calificacion;
 
+    @Size(max = 500, message = "La observación no puede superar los 500 caracteres")
+    private String observacion;
 
-    @NotNull(message = "La fecha no puede ser nula")
-    @PastOrPresent(message = "La fecha no puede ser futura")
+    @NotNull(message = "La fecha de registro no puede ser nula")
+    @PastOrPresent(message = "La fecha de registro no puede ser futura")
     private LocalDate fecha;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "alumno_id", nullable = false)
     private  Alumno alumno;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "materia_id", nullable = false)
     private Materia materia;
 }
