@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface NotaRepository extends JpaRepository<Nota,Long> {
-    List<Nota>finByActividadId(Long actividadId);
-    Optional<Nota>findByAllumnoIdAndActividadId(Long alumnoId);
+public interface NotaRepository extends JpaRepository<Nota, Long> {
+    List<Nota> findByActividadId(Long actividadId);
+    Optional<Nota> findByAlumnoIdAndActividadId(Long alumnoId, Long actividadId);
 }

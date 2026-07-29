@@ -7,8 +7,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-public interface AsistenciaRepository extends JpaRepository <Asistencia,Long> {
-    List<Asistencia>finByFechaAndMateriaId(LocalDate fecha, Long materiaId);
-    Optional<Asistencia> findByAlumnoIdAndFechaAndMateriaId(Long aumnoId, LocalDate fecha, Long materiaId);
-
+public interface AsistenciaRepository extends JpaRepository<Asistencia, Long> {
+    List<Asistencia> findByFechaAndMateriaId(LocalDate fecha, Long materiaId);
+    Optional<Asistencia> findByAlumnoIdAndFechaAndMateriaId(Long alumnoId, LocalDate fecha, Long materiaId);
 }
