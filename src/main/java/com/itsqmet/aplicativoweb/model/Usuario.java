@@ -2,13 +2,11 @@ package com.itsqmet.aplicativoweb.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 
 @Entity
-@Getter
-@Setter
+
 @NoArgsConstructor
 
 public class Usuario {
