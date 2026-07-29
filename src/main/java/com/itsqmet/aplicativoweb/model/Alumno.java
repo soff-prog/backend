@@ -1,5 +1,4 @@
 package com.itsqmet.aplicativoweb.model;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
