@@ -55,4 +55,6 @@ public class Representante {
     @Size(min = 2, max = 50, message = "El curso debe tener entre 2 y 50 caracteres")
     private String curso;
 
+
+
 }

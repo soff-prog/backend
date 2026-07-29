@@ -4,7 +4,6 @@ package com.itsqmet.aplicativoweb.service;
 import com.itsqmet.aplicativoweb.exception.NotaNoEncontradaException;
 import com.itsqmet.aplicativoweb.exception.DatosInvalidosException;
 import com.itsqmet.aplicativoweb.model.Nota;
-import com.itsqmet.aplicativoweb.repository.NotaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

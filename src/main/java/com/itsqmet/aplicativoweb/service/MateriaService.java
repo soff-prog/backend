@@ -3,7 +3,6 @@ package com.itsqmet.aplicativoweb.service;
 import com.itsqmet.aplicativoweb.exception.MateriaNoEncontradaException;
 import com.itsqmet.aplicativoweb.exception.DatosInvalidosException;
 import com.itsqmet.aplicativoweb.model.Materia;
-import com.itsqmet.aplicativoweb.repository.MateriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

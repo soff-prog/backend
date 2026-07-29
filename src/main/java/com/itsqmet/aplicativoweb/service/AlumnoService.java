@@ -31,7 +31,7 @@ public class AlumnoService {
     // CREATE - crear alumno con validación básica
 
     public Alumno crearAlumno(Alumno alumno) {
-        if (alumno.getNombre() == null || alumno.getApellido() == null) {
+        if (alumno.getNombres() == null || alumno.getApellidos() == null) {
             throw new DatosInvalidosException("Nombre y Apellido son obligatorios");
         }
         return alumnoRepository.save(alumno);
@@ -41,9 +41,9 @@ public class AlumnoService {
 
     public Alumno actualizar(Long id, Alumno alumnoActualizado) {
         return alumnoRepository.findById(id).map(alumno -> {
-            alumno.setNombre(alumnoActualizado.getNombre());
-            alumno.setApellido(alumnoActualizado.getApellido());
-            alumno.setCurso(alumnoActualizado.getCurso());
+            alumno.setNombres(alumnoActualizado.getNombres());
+            alumno.setApellidos(alumnoActualizado.getApellidos());
+           // alumno.setCurso(alumnoActualizado.getCurso());
             return alumnoRepository.save(alumno);
         }).orElseThrow(() -> new AlumnoNoEncontradoException(id));
     }
