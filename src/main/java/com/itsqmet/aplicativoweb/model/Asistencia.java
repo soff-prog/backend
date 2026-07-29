@@ -1,15 +1,12 @@
 package com.itsqmet.aplicativoweb.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
+import jakarta.validation.constraints.*;
+import lombok.*;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import java.time.LocalDate;
 @Entity
-@Getter
-@Setter
+@lombok
 @NoArgsConstructor
 @Table(
         uniqueConstraints = @UniqueConstraint(
@@ -20,17 +17,30 @@ public class Asistencia {
     @Id
     @GeneratedValue(strategy  = GenerationType.IDENTITY)
     private Long id;
-    @NotNull private LocalDate fecha;
-    @NotBlank private String estado;
-    @Column(length = 500) private String  observacion;
+    @NotNull (message ="El campo fecha es obligatoria")
+    @PastOrPresent(message = "La fecha no puede ser futura")
+    private LocalDate fecha;
 
+    @NotBlank (message = "El campo estado es obligatorio")
+    @Pattern(
+            regexp = "Presente|Ausente|Justificado|Atraso",
+            message = "El estado debe ser: Presente, Ausente, Justificado o Atraso"
+    )
+    private String estado;
+
+    @Size(max=200, message= "La observacopm no puede superar las 500 caracteres")
+    @Column(length = 500)
+    private String  observacion;
+
+    @NotNull(message = "Debe seleccionar un alumno")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "alumno_id")
+    @JoinColumn(name = "alumno_id", nullable = false)
     @JsonIgnoreProperties({"RepresentanteRegistro"})
     private Alumno alumno;
 
+    @NotNull(message = "Debe selecionar una materia")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "materia_id")
+    @JoinColumn(name = "materia_id", nullable = false)
     @JsonIgnoreProperties({"docente"})
     private Materia materia;
 
