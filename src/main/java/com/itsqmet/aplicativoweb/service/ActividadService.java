@@ -22,7 +22,7 @@ public class ActividadService {
         return actividadRepository.findById(id);
     }
 
-    public Actividad guardadActvidad(Actividad actividad){
+    public Actividad guardarActividad(Actividad actividad){
         return actividadRepository.save(actividad);
     }
 
