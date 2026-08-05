@@ -1,15 +1,17 @@
 package com.itsqmet.aplicativoweb.controller;
+import com.itsqmet.aplicativoweb.dto.Auth.Dtos.LoginRequest;
+import com.itsqmet.aplicativoweb.service.AuthService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import java.util.Map;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -17,7 +19,7 @@ public class AuthController {
     private final AuthService autenticacion;
 
     public AuthController(AuthService autenticacion){
-        this.autenticacion = autenticacion
+        this.autenticacion = autenticacion;
     }
 
     @GetMapping("/csrf")
@@ -29,7 +31,7 @@ public class AuthController {
     public ResponseEntity<?> login(
             @Valid @RequestBody LoginRequest request,
             HttpServletRequest servletRequest){
-        AutheService.ResultadoLogin resultado = autenticacion.autenticar(request);
+        AuthService.ResultadoLogin resultado = autenticacion.autenticar(request);
         if (resultado == null){
             return ResponseEntity.status(401).body(Map.of("error", "Credenciales incorrectas"));
         }
@@ -41,11 +43,12 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<?> me(Authentication authentication){
-        if (authentication == null){
-            return ResponseEntity.status(401).body(Map.of("error", "No autenticado"));
+    public ResponseEntity<?> me(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(401)
+                    .body(Map.of("error", "No autenticado"));
         }
-        return ResponseEntity.ok(authentication.obtenerSesion(authentication));
+        return ResponseEntity.ok(autenticacion.obtenerSesion(authentication));
     }
 
     @PostMapping("/logout")
