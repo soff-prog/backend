@@ -25,10 +25,10 @@ public class AuthService {
     }
 
     public ResultadoLogin autenticar(LoginRequest request) {
-        Usuario usuario = usuarios.findByUsuarioIgnorecase(request.usuario()).orElse(null);
+        Usuario usuario = usuarios.findByUsuarioIgnoreCase(request.usuario()).orElse(null);
         if (usuario == null
                 || !"Activo".equals(usuario.getEstado())
-                || !encoder.matches(request.password(), usuario.getPassword())) {
+                || !encoder.matches(request.password(), usuario.getContrasenia())) {
             return null;
         }
 
@@ -50,7 +50,7 @@ public class AuthService {
     }
 
     public SessionResponse obtenerSesion(Authentication authentication) {
-        Usuario usuario = usuarios.findByUsuarioIgnorecase(authentication.getName())
+        Usuario usuario = usuarios.findByUsuarioIgnoreCase(authentication.getName())
                 .orElseThrow(() -> new org.springframework.web.server.ResponseStatusException(
                         org.springframework.http.HttpStatus.UNAUTHORIZED,
                         "Sesión no válida"));
@@ -71,5 +71,3 @@ public class AuthService {
 
     public record ResultadoLogin(Authentication autenticacion, LoginResponse respuesta) {}
 }
-
-
